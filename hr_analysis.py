@@ -3,8 +3,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import koreanize_matplotlib  # 한글/마이너스 자동 설정
-#import matplotlib.font_manager as fm
+# import os
+# import matplotlib.font_manager as fm
+# import matplotlib as mpl
+# 1. 필요한 패키지 설치
+#pip install numpy
+#pip install matplotlib
+#pip install seaborn
+
 
 # NanumGothic 폰트 경로를 직접 지정
 # font_path = "C:/Windows/Fonts/NanumGothic.ttf"
@@ -13,11 +19,26 @@ import koreanize_matplotlib  # 한글/마이너스 자동 설정
 # plt.rcParams["axes.unicode_minus"] = False
 
 # 한글 폰트 설정
-plt.rcParams['font.family'] = "NanumGothic"
-plt.rcParams['axes.unicode_minus'] = False
+# plt.rcParams['font.family'] = "Malgun Gothic"
+# plt.rcParams['axes.unicode_minus'] = False
+
+# 폰트 경로 설정
+# font_dir = os.path.join(os.path.dirname(__file__), 'hangul_fonts')
+# font_files = fm.findSystemFonts(fontpaths=font_dir)
+
+# # 시스템에 폰트 등록 및 설치
+# for font_file in font_files:
+#     fm.fontManager.addfont(font_file)
+
+# # Matplotlib 폰트 설정 (원하는 폰트 이름으로 변경)
+# mpl.rc('font', family='NanumSquare')
+
+# # 폰트가 마이너스 부호를 이상하게 표시하는 경우, 마이너스 기호도 설정할 수 있습니다.
+# mpl.rcParams['axes.unicode_minus'] = False
 
 st.set_page_config(page_title="퇴직율 대시보드", layout="wide")
 sns.set(style="whitegrid")
+#sns.set(style="whitegrid", font="Malgun Gothic")
 
 # 1) 데이터 로드
 @st.cache_data
@@ -30,6 +51,7 @@ def load_df(path:str ="HR Data.csv") -> pd.DataFrame:
     df.drop(['직원수', '18세이상'], axis=1, inplace=True)
     return df
 
+
 df = load_df()
 if df.empty:
     st.error("데이터가 없습니다. 'HR Data.csv' 파일을 확인하세요.")
@@ -38,7 +60,8 @@ if df.empty:
 # ===== KPI  =====
 # 1) 헤더 & KPI
 st.title("퇴직율 분석 및 인사이트")
-n = len(df); quit_n = int(df["퇴직"].sum())
+n = len(df); 
+quit_n = int(df["퇴직"].sum())
 quit_rate = df["퇴직"].mean()*100
 stay_rate = 100 - quit_rate
 k1,k2,k3,k4 = st.columns(4)
