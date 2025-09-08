@@ -3,12 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-# 1. 필요한 패키지 설치
-#pip install numpy
-#pip install matplotlib
-#pip install seaborn
-
+import koreanize_matplotlib  # 한글/마이너스 자동 설정
+#import matplotlib.font_manager as fm
 
 # NanumGothic 폰트 경로를 직접 지정
 # font_path = "C:/Windows/Fonts/NanumGothic.ttf"
@@ -17,11 +13,11 @@ import seaborn as sns
 # plt.rcParams["axes.unicode_minus"] = False
 
 # 한글 폰트 설정
-# plt.rcParams['font.family'] = "Malgun Gothic"
-# plt.rcParams['axes.unicode_minus'] = False
+plt.rcParams['font.family'] = "NanumGothic"
+plt.rcParams['axes.unicode_minus'] = False
 
 st.set_page_config(page_title="퇴직율 대시보드", layout="wide")
-sns.set(style="whitegrid", font="Malgun Gothic")
+sns.set(style="whitegrid")
 
 # 1) 데이터 로드
 @st.cache_data
@@ -34,7 +30,6 @@ def load_df(path:str ="HR Data.csv") -> pd.DataFrame:
     df.drop(['직원수', '18세이상'], axis=1, inplace=True)
     return df
 
-
 df = load_df()
 if df.empty:
     st.error("데이터가 없습니다. 'HR Data.csv' 파일을 확인하세요.")
@@ -43,8 +38,7 @@ if df.empty:
 # ===== KPI  =====
 # 1) 헤더 & KPI
 st.title("퇴직율 분석 및 인사이트")
-n = len(df); 
-quit_n = int(df["퇴직"].sum())
+n = len(df); quit_n = int(df["퇴직"].sum())
 quit_rate = df["퇴직"].mean()*100
 stay_rate = 100 - quit_rate
 k1,k2,k3,k4 = st.columns(4)
