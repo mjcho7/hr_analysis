@@ -3,42 +3,36 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-# import os
-# import matplotlib.font_manager as fm
-# import matplotlib as mpl
+import os
+import matplotlib.font_manager as fm
+import matplotlib as mpl
 # 1. 필요한 패키지 설치
 #pip install numpy
 #pip install matplotlib
 #pip install seaborn
 
 
-# NanumGothic 폰트 경로를 직접 지정
-# font_path = "C:/Windows/Fonts/NanumGothic.ttf"
-# fontprop = fm.FontProperties(fname=font_path)
-# plt.rcParams["font.family"] = "NanumGothic"
-# plt.rcParams["axes.unicode_minus"] = False
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.font_manager as fm
+import warnings
+warnings.filterwarnings(action='ignore')
+import os
 
-# 한글 폰트 설정
-# plt.rcParams['font.family'] = "Malgun Gothic"
-# plt.rcParams['axes.unicode_minus'] = False
-
-# 폰트 경로 설정
-# font_dir = os.path.join(os.path.dirname(__file__), 'hangul_fonts')
-# font_files = fm.findSystemFonts(fontpaths=font_dir)
-
-# # 시스템에 폰트 등록 및 설치
-# for font_file in font_files:
-#     fm.fontManager.addfont(font_file)
-
-# # Matplotlib 폰트 설정 (원하는 폰트 이름으로 변경)
-# mpl.rc('font', family='NanumSquare')
-
-# # 폰트가 마이너스 부호를 이상하게 표시하는 경우, 마이너스 기호도 설정할 수 있습니다.
-# mpl.rcParams['axes.unicode_minus'] = False
 
 st.set_page_config(page_title="퇴직율 대시보드", layout="wide")
 sns.set(style="whitegrid")
 #sns.set(style="whitegrid", font="Malgun Gothic")
+
+# 폰트 경로를 직접 지정
+font_dir = "./hangul_fonts"
+font_path = os.path.join(font_dir, "NanumSquare.ttf")
+
+fontprop = fm.FontProperties(fname=font_path)
+
+plt.rcParams["font.family"] = fontprop.get_name()
+plt.rcParams["axes.unicode_minus"] = False
+
 
 # 1) 데이터 로드
 @st.cache_data
@@ -93,9 +87,10 @@ if "급여증가분백분율" in df.columns:
         st.subheader("💰 급여인상율과 퇴직율")
         fig2, ax2 = plt.subplots(figsize=(6.5,3.5))
         sns.lineplot(x=sal.index, y=sal.values, marker="o", ax=ax2)
-        ax2.set_xlabel("급여인상율(%)"); 
-        ax2.set_ylabel("퇴직율(%)")
+        ax2.set_xlabel("급여인상율(%)",fontproperties=fontprop)
+        ax2.set_ylabel("퇴직율(%)",fontproperties=fontprop)
         st.pyplot(fig2)
+
 
 # (우) 야근정도별 퇴직율 (Yes/No 막대)
 col_name = "야근정도"
