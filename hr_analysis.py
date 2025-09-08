@@ -102,6 +102,7 @@ if col_name in df.columns:
         st.subheader("⏰ 야근정도별 퇴직율")
         fig3, ax3 = plt.subplots(figsize=(6.5,3.5))
         sns.barplot(x=ot.index, y=ot.values, ax=ax3)
+        ax3.set_xlabel("야근정도",fontproperties=fontprop  ); 
         ax3.set_ylabel("퇴직율(%)",fontproperties=fontprop  ); 
         ax3.bar_label(ax3.containers[0], fmt="%.1f")
         st.pyplot(fig3)
